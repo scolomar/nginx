@@ -3,7 +3,7 @@
 #      SPDX-License-Identifier:  GPL-2.0-only                           #
 #########################################################################
 FROM									\
-	nginx:1.19.0-alpine@sha256:2fa12030ffb0224e0b2e17bc4b1f1479e191e2fd65869fc60d09a8efa5b6d879 \
+	nginx:1.19.0-alpine@sha256:ee5a9b68e8d4a4b8b48318ff08ad5489bd1ce52b357bf48c511968a302bc347b \
 		AS nginx
 #########################################################################
 RUN									\
