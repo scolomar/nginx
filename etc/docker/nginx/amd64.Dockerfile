@@ -29,6 +29,6 @@ RUN									\
 	done
 #########################################################################
 RUN									\
-	rm -rf /etc/nginx/conf.d					\
-		&& ln -s /run/secrets/etc/nginx/conf.d /etc/nginx
+	rm -rf	/etc/nginx/conf.d					&& \
+	ln -s -T /run/secrets/etc/nginx/conf.d	/etc/nginx/conf.d
 #########################################################################
