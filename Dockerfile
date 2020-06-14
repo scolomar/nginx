@@ -33,6 +33,9 @@ RUN									\
 	mv	/etc/nginx/conf.d					\
 		/run/configs/etc/nginx/conf.d				&& \
 	ln -svT	/run/configs/etc/nginx/conf.d				\
-		/etc/nginx/conf.d
+		/etc/nginx/conf.d					&& \
+	mkdir -p /run/configs/etc/nginx/conf.d/secrets/			&& \
+	ln -svT	/run/configs/etc/nginx/conf.d/secrets			\
+		/etc/nginx/conf.d/secrets
 
 ################################################################################
