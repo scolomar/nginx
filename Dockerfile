@@ -6,6 +6,8 @@
 
 
 ################################################################################
+ARG	port="8080"
+################################################################################
 FROM	"nginx:1.19.0-alpine"	AS nginx
 ################################################################################
 RUN									\
@@ -25,17 +27,15 @@ RUN									\
 
 ################################################################################
 RUN									\
-	mkdir -p /run/configs/etc/nginx/				&& \
-	mv	/etc/nginx/nginx.conf					\
-		/run/configs/etc/nginx/nginx.conf			&& \
+	rm -fv	/etc/nginx/nginx.conf					&& \
 	ln -svT	/run/configs/etc/nginx/nginx.conf			\
 		/etc/nginx/nginx.conf					&& \
-	mv	/etc/nginx/conf.d					\
-		/run/configs/etc/nginx/conf.d				&& \
-	ln -svT	/run/configs/etc/nginx/conf.d				\
-		/etc/nginx/conf.d					&& \
-	mkdir -p /run/secrets/etc/nginx/conf.d/secrets/			&& \
+	rm -frv	/etc/nginx/conf.d/*					&& \
+	ln -svT	/run/configs/etc/nginx/conf.d/configs			\
+		/etc/nginx/conf.d/configs				&& \
 	ln -svT	/run/secrets/etc/nginx/conf.d/secrets			\
 		/etc/nginx/conf.d/secrets
 
+################################################################################
+EXPOSE	${port}
 ################################################################################
