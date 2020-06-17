@@ -26,12 +26,6 @@ RUN									\
 ################################################################################
 RUN									\
 	rm -fv	/etc/nginx/nginx.conf					&& \
-	ln -svT	/run/configs/etc/nginx/nginx.conf			\
-		/etc/nginx/nginx.conf					&& \
-	rm -frv	/etc/nginx/conf.d/*					&& \
-	ln -svT	/run/configs/etc/nginx/conf.d/configs			\
-		/etc/nginx/conf.d/configs				&& \
-	ln -svT	/run/secrets/etc/nginx/conf.d/secrets			\
-		/etc/nginx/conf.d/secrets
+	rm -frv	/etc/nginx/conf.d/*
 
 ################################################################################
