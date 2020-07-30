@@ -26,6 +26,10 @@ RUN									\
 ################################################################################
 RUN									\
 	rm -fv	/etc/nginx/nginx.conf					&& \
-	rm -frv	/etc/nginx/conf.d/*
+	ln -svT	/usr/local/etc/nginx/nginx.conf				\
+		/etc/nginx/nginx.conf					&& \
+	rm -frv	/etc/nginx/conf.d					&& \
+	ln -svT	/usr/local/etc/nginx/conf.d				\
+		/etc/nginx/conf.d
 
 ################################################################################
