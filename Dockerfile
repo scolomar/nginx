@@ -3,9 +3,9 @@
 #      SPDX-License-Identifier:  GPL-2.0-only                           #
 #########################################################################
 ARG									\
-	digest="@sha256:4635b632d2aaf8c37c8a1cf76a1f96d11b899f74caa2c6946ea56d0a5af02c0c"
+	digest="@sha256:a3c6118edc80de4a5aaf2711b7742c25d4d2da54325bae465205cb386afa79ee"
 ARG									\
-	tag="1.19.2-alpine"
+	tag="1.19.3-alpine"
 #########################################################################
 FROM									\
 	nginx:${tag}${digest}						\
