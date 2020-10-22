@@ -18,7 +18,7 @@ jobs:
 
         project=$(basename $GITHUB_REPOSITORY)
 
-        compose=etc/docker/$mode/$project.yaml
+        compose=etc/$mode/$project.yaml
 
         date=$(date +%s)
 
