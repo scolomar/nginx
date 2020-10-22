@@ -35,9 +35,9 @@ jobs:
           done;        
         minikube kubectl -- apply -f $compose
         free -h
-#        while true
-#          do
-#            sleep 1
-#            minikube kubectl -- get deploy
-#            minikube kubectl -- get deploy | grep '\([0-9]\)/\1' && break
-#          done
+        while true
+          do
+            sleep 10
+            minikube kubectl -- get deploy
+            minikube kubectl -- get deploy | grep '\([0-9]\)/\1' && break
+          done
