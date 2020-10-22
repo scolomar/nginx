@@ -1,4 +1,5 @@
-![CI](https://github.com/secobau/nginx/workflows/CI/badge.svg)
+![swarm](https://github.com/secobau/nginx/workflows/swarm/badge.svg)
+![minikube](https://github.com/secobau/nginx/workflows/minikube/badge.svg)
 
 # Usage
 
