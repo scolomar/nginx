@@ -1,7 +1,8 @@
 name: swarm
 on:
   push: 
-    branches: [main]
+    branches:
+      - master
 jobs: 
   swarm: 
     env:
