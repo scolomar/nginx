@@ -27,7 +27,7 @@ services:
     networks:
     - my_network
     ports:
-    - 30001:8080
+    - 80:8080
     secrets:
     -
       mode: 0400
