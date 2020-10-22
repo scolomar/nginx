@@ -13,7 +13,6 @@ jobs:
       -
         name: build and test
         run: |
-          set -x
           docker build -t test --no-cache .
           sudo cp -rv run/* /run
           docker run -d \
