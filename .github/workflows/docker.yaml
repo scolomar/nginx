@@ -28,10 +28,5 @@ jobs:
           while true
             do
               sleep 10
-              docker ps | grep nginx && break
-            done
-          while true
-            do
-              sleep 10
               curl localhost -I | grep 200 && break
             done
