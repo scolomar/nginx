@@ -1,0 +1,32 @@
+name: docker
+on: 
+  push:
+    branches:
+      - master
+jobs:
+  test:
+    runs-on: ubuntu-18.04
+    steps:
+      - 
+        name: checkout
+        uses: actions/checkout@v2
+      -
+        name: build and test
+        run: |
+          docker build -t test --no-cache .
+          docker run -d -p 80:8080 test
+          while true
+            do
+              sleep 10
+              docker ps | grep Up && break
+            done
+          while true
+            do
+              sleep 10
+              docker ps | grep nginx && break
+            done
+          while true
+            do
+              sleep 10
+              curl localhost -I | grep 200 && break
+            done
