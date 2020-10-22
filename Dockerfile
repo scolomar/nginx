@@ -36,10 +36,10 @@ RUN									\
 	&& 								\
 	rm 	-f 							\
 		-r 	/etc/nginx/conf.d/*				\
-	&& 								\
-	ln	-s							\
-			/run/nginx/etc/nginx/nginx.conf			\
-			/etc/nginx/nginx.conf				\
+#	&& 								\
+#	ln	-s							\
+#			/run/nginx/etc/nginx/nginx.conf			\
+#			/etc/nginx/nginx.conf				\
 									;
 #########################################################################
 VOLUME									\
