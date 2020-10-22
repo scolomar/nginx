@@ -1,0 +1,43 @@
+name: minikube
+on: 
+  push:
+    branches: 
+    - master
+jobs:
+  minikube:
+    env:
+      mode: minikube
+    runs-on: ubuntu-18.04
+    steps:
+    -
+      uses: actions/checkout@v2
+    -
+      run: |
+        #set -x
+        curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
+        sudo dpkg -i minikube_latest_amd64.deb
+        project=$(basename $GITHUB_REPOSITORY)
+        compose=etc/$mode/$project.yaml
+        free -h
+        minikube start
+        sudo cp -rv run/* /run
+        for config in $( find /run/configs -type f );
+          do
+            file=$( basename $config );
+            minikube kubectl -- create configmap $file --from-file $config;
+            sudo rm -f $config;
+          done;
+        for secret in $( find /run/secrets -type f );
+          do
+            file=$( basename $secret );
+            minikube kubectl -- create secret generic $file --from-file $secret;
+            sudo rm -f $secret;
+          done;        
+        minikube kubectl -- apply -f $compose
+        free -h
+#        while true
+#          do
+#            sleep 1
+#            minikube kubectl -- get deploy
+#            minikube kubectl -- get deploy | grep '\([0-9]\)/\1' && break
+#          done
