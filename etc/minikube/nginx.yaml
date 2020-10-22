@@ -36,13 +36,15 @@ spec:
           initialDelaySeconds: 1
         volumeMounts:
         - 
-          mountPath: /etc/nginx/conf.d
+          mountPath: /etc/nginx/conf.d/default.conf
           name: nginx-default-vol
           readOnly: true
+          subPath: default.conf
         - 
-          mountPath: /run/nginx/etc/nginx
+          mountPath: /run/nginx/etc/nginx/nginx.conf
           name: nginx-conf-vol
           readOnly: true
+          subPath: nginx.conf
         -
           mountPath: /var/cache/nginx
           name: nginx-cache-vol
@@ -55,11 +57,19 @@ spec:
       volumes:
       - 
         configMap:
+          items:
+          -
+            key: nginx.conf
+            path: nginx.conf
           name: nginx.conf
         name: nginx-conf-vol
       - 
         name: nginx-default-vol
         secret:
+          items:
+          -
+            key: default.conf
+            path: default.conf
           secretName: default.conf
       -
         name: nginx-cache-vol
