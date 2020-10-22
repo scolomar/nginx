@@ -1,5 +1,6 @@
-![swarm](https://github.com/secobau/nginx/workflows/swarm/badge.svg)
-![minikube](https://github.com/secobau/nginx/workflows/minikube/badge.svg)
+![docker](https://github.com/secobau/nginx/workflows/docker/badge.svg?branch=master)
+![swarm](https://github.com/secobau/nginx/workflows/swarm/badge.svg?branch=master)
+![minikube](https://github.com/secobau/nginx/workflows/minikube/badge.svg?branch=master)
 
 # Usage
 
