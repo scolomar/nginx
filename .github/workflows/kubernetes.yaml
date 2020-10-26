@@ -21,6 +21,7 @@ jobs:
         sudo apt-get install -y kubelet=$version kubeadm=$version kubectl=$version --allow-downgrades
         ip=$( ip r | grep default | awk '{ print $9 }' )
         sudo swapoff -a
+        ip=localhost
         sudo kubeadm init --apiserver-advertise-address $ip --pod-network-cidr=192.168.0.0/16 --ignore-preflight-errors=all
         mkdir -p $HOME/.kube
         sudo cp /etc/kubernetes/admin.conf $HOME/.kube/config
