@@ -22,6 +22,7 @@ jobs:
         sudo apt-get install -y kubernetes-cni=$k8scni
         sudo apt-get install -y kubelet=$k8sver kubeadm=$k8sver kubectl=$k8sver
         ip=$( ip r | grep default | awk '{ print $9 }' )
-        echo $ip k8smaster | sudo tee -a /etc/hosts       
+        echo $ip k8smaster | sudo tee -a /etc/hosts
+        sudo swapoff -a
         sudo kubeadm init --control-plane-endpoint=k8smaster --pod-network-cidr=192.168.0.0/16 --ignore-preflight-errors=all
         
