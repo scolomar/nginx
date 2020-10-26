@@ -17,8 +17,11 @@ jobs:
         curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
         echo deb http://apt.kubernetes.io/ kubernetes-xenial main | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
         sudo apt-get update
-        sudo apt-get install -y kubelet kubeadm kubectl
+        k8scni="0.8.6-00"
+        k8sver="1.18.6-00"
+        sudo apt-get install -y kubernetes-cni=$k8scni
+        sudo apt-get install -y kubelet=$k8sver kubeadm=$k8sver kubectl=$k8sver
         ip=$( ip r | grep default | awk '{ print $9 }' )
-        echo $ip k8smaster | sudo tee -a /etc/hosts
+        echo $ip k8smaster | sudo tee -a /etc/hosts       
         sudo kubeadm init --control-plane-endpoint=k8smaster --pod-network-cidr=192.168.0.0/16 --ignore-preflight-errors=all
         
