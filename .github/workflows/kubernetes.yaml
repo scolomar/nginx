@@ -30,3 +30,25 @@ jobs:
         master=$( kubectl get node | grep master | awk '{ print $1 }' )
         kubectl taint node $master node-role.kubernetes.io/master:NoSchedule-
         
+        project=$(basename $GITHUB_REPOSITORY)
+        compose=etc/$mode/$project.yaml
+        sudo cp -rv run/* /run
+        for config in $( find /run/configs -type f );
+          do
+            file=$( basename $config );
+            kubectl create configmap $file --from-file $config;
+            sudo rm -f $config;
+          done;
+        for secret in $( find /run/secrets -type f );
+          do
+            file=$( basename $secret );
+            kubectl create secret generic $file --from-file $secret;
+            sudo rm -f $secret;
+          done;        
+        kubectl apply -f $compose
+        while true
+          do
+            sleep 10
+            kubectl get deploy
+            kubectl get deploy | grep '\([0-9]\)/\1' && break
+          done        
