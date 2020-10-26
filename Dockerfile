@@ -18,16 +18,14 @@ RUN									\
 			done						\
 			| sort						\
 			| uniq						\
-			| grep -v ^nginx$				\
+			| grep -v ^nginx$;				\
 	); do								\
-		apk del $package;					\
+		apk del ${package};					\
 	done
 
 ################################################################################
 RUN									\
-	rm -frv	/etc/nginx/conf.d					&& \
-	ln -svT	/usr/local/etc/nginx/conf.d				\
-		/etc/nginx/conf.d
+	rm -frv	/etc/nginx/conf.d/default.conf;
 
 ################################################################################
 VOLUME									\
