@@ -10,7 +10,7 @@ _D="${_d}/..";
 
 nginx_dep="${_D}/etc/docker/dependencies/nginx";
 
-arch="x86_64";
+arch="$(uname -m)";
 
 nginx_reg="$(<${nginx_dep} grep '^reg' | cut -f2)";
 nginx_user="$(<${nginx_dep} grep '^user' | cut -f2)";
