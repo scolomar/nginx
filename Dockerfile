@@ -11,7 +11,7 @@ FROM	"nginx:1.19.8-alpine"	AS nginx
 RUN									\
 	apk list							\
 	|grep 'nginx'							\
-	|cut -f1							\
+	|cut -d' ' -f1							\
 	|sed 's/-[0-9].*//'						\
 	|sort								\
 	|uniq								\
