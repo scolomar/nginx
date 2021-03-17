@@ -16,9 +16,7 @@ RUN									\
 	|sort								\
 	|uniq								\
 	|grep -v '^nginx$'						\
-	|while read -r pkg; do						\
-		apk del ${pkg};						\
-	done;
+	|xargs apk del;
 
 ################################################################################
 RUN	rm -frv	/etc/nginx/conf.d/default.conf;
