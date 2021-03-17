@@ -8,8 +8,10 @@ SHELL	= /bin/bash
 registry= docker.io
 user	= alejandrocolomar
 repo	= nginx
-img	= $(registry)/$(user)/$(repo):$(shell git describe --tags)
-img_	= $(img)_$(shell uname -m)
+label	= $(shell git describe --tags | sed 's/^v//')
+label_	= $(label)_$(shell uname -m)
+img	= $(registry)/$(user)/$(repo):$(label)
+img_	= $(registry)/$(user)/$(repo):$(label_)
 
 .PHONY: image
 image:
