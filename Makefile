@@ -5,9 +5,10 @@
 ########################################################################
 SHELL	= /bin/bash
 
+registry= docker.io
 user	= alejandrocolomar
 repo	= nginx
-img	= $(user)/$(repo):$(shell git describe --tags)
+img	= $(registry)/$(user)/$(repo):$(shell git describe --tags)
 img_	= $(img)_$(shell uname -m)
 
 .PHONY: image
