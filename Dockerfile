@@ -10,7 +10,7 @@ ARG	NGINX_REG=docker.io
 ARG	NGINX_USER=library
 ARG	NGINX_REPO=nginx
 ARG	NGINX_LBL=1.19.8-alpine
-ARG	NGINX_DIGEST=sha256:0c56c40f232f41c1b8341c3cc055c8b528cb6decefd7f7c8506e2d30bb9678b6
+ARG	NGINX_DIGEST=sha256:96419b83f29b198ae9f63670d5a28325a8bc9ebaf76c1260cf15eca3a521ebd0
 ########################################################################
 FROM	"${NGINX_REG}/${NGINX_USER}/${NGINX_REPO}:${NGINX_LBL}@${NGINX_DIGEST}" \
 	AS nginx
