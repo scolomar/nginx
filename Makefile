@@ -17,6 +17,7 @@ img	= $(reg)/$(user)/$(repo):$(lbl)
 img_	= $(reg)/$(user)/$(repo):$(lbl_)
 
 
+.PHONY: Dockerfile
 Dockerfile: $(CURDIR)/etc/docker/dependencies/nginx
 Dockerfile: $(CURDIR)/libexec/update_dockerfile
 	@echo '	Update Dockerfile ARGs';
