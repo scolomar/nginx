@@ -1,7 +1,7 @@
 ################################################################################
-##      Copyright (C) 2020        Sebastian Francisco Colomar Bauza           ##
-##      Copyright (C) 2020        Alejandro Colomar Andrés                    ##
-##      SPDX-License-Identifier:  GPL-2.0-only                                ##
+#	Copyright (C) 2020        Sebastian Francisco Colomar Bauza
+#	Copyright (C) 2020        Alejandro Colomar Andres
+#	SPDX-License-Identifier:  GPL-2.0-only
 ################################################################################
 
 
