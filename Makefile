@@ -23,7 +23,7 @@ image-push:
 .PHONY: manifest
 manifest:
 	@echo '	DOCKER manifest create	$(img)';
-	@docker manifest create '$(img)' '$(img)_x86_64' '$(img)_arm64';
+	@docker manifest create '$(img)' '$(img)_x86_64' '$(img)_aarch64';
 
 .PHONY: manifest-push
 manifest-push:
