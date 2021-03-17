@@ -5,18 +5,34 @@
 ########################################################################
 SHELL	= /bin/bash
 
-registry= docker.io
+
+arch	= $(shell uname -m)
+
+nginx_conf	= $(CURDIR)/etc/docker/dependencies/nginx
+nginx_reg	= $(shell <$(nginx_conf) grep reg | cut -f2)
+nginx_user	= $(shell <$(nginx_conf) grep user | cut -f2)
+nginx_repo	= $(shell <$(nginx_conf) grep repo | cut -f2)
+nginx_lbl	= $(shell <$(nginx_conf) grep lbl | cut -f2)
+nginx_digest	= $(shell <$(nginx_conf) grep digest | grep $(arch) | cut -f3)
+
+reg	= docker.io
 user	= alejandrocolomar
 repo	= nginx
-label	= $(shell git describe --tags | sed 's/^v//')
-label_	= $(label)_$(shell uname -m)
-img	= $(registry)/$(user)/$(repo):$(label)
-img_	= $(registry)/$(user)/$(repo):$(label_)
+lbl	= $(shell git describe --tags | sed 's/^v//')
+lbl_	= $(lbl)_$(arch)
+img	= $(reg)/$(user)/$(repo):$(lbl)
+img_	= $(reg)/$(user)/$(repo):$(lbl_)
 
 .PHONY: image
 image:
 	@echo '	DOCKER image build	$(img_)';
-	@docker image build -t '$(img_)' $(CURDIR);
+	@docker image build -t '$(img_)' \
+			--build-arg 'NGINX_REG=$(nginx_reg)' \
+			--build-arg 'NGINX_USER=$(nginx_user)' \
+			--build-arg 'NGINX_REPO=$(nginx_repo)' \
+			--build-arg 'NGINX_LBL=$(nginx_lbl)' \
+			--build-arg 'NGINX_DIGEST=$(nginx_digest)' \
+			$(CURDIR);
 
 .PHONY: image-push
 image-push:

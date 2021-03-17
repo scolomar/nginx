@@ -6,7 +6,14 @@
 
 
 ########################################################################
-FROM	"nginx:1.19.8-alpine"	AS nginx
+ARG	NGINX_REG
+ARG	NGINX_USER
+ARG	NGINX_REPO
+ARG	NGINX_LBL
+ARG	NGINX_DIGEST
+########################################################################
+FROM	"${NGINX_REG}/${NGINX_USER}/${NGINX_REPO}:${NGINX_LBL}@${NGINX_DIGEST}" \
+	AS nginx
 ########################################################################
 RUN									\
 	apk list							\
