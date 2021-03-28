@@ -30,11 +30,11 @@ all: image
 Dockerfile: $(CURDIR)/etc/docker/images/nginx
 	@echo '	Update Dockerfile ARGs';
 	@sed -i \
-		-e '/^ARG	NGINX_REG=/s/=.*/=$(nginx_reg)/' \
-		-e '/^ARG	NGINX_USER=/s/=.*/=$(nginx_user)/' \
-		-e '/^ARG	NGINX_REPO=/s/=.*/=$(nginx_repo)/' \
-		-e '/^ARG	NGINX_LBL=/s/=.*/=$(nginx_lbl)/' \
-		-e '/^ARG	NGINX_DIGEST=/s/=.*/=$(nginx_digest)/' \
+		-e '/^ARG	NGINX_REG=/s/=.*/="$(nginx_reg)"/' \
+		-e '/^ARG	NGINX_USER=/s/=.*/="$(nginx_user)"/' \
+		-e '/^ARG	NGINX_REPO=/s/=.*/="$(nginx_repo)"/' \
+		-e '/^ARG	NGINX_LBL=/s/=.*/="$(nginx_lbl)"/' \
+		-e '/^ARG	NGINX_DIGEST=/s/=.*/="$(nginx_digest)"/' \
 		$(CURDIR)/$@;
 
 .PHONY: image
