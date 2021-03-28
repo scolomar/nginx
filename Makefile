@@ -47,12 +47,12 @@ image-push:
 	@echo '	DOCKER image push	$(img_)';
 	@docker image push '$(img_)'; 
 
-.PHONY: manifest
-manifest:
+.PHONY: image-manifest
+image-manifest:
 	@echo '	DOCKER manifest create	$(img)';
 	@docker manifest create '$(img)' '$(img)_x86_64' '$(img)_aarch64';
 
-.PHONY: manifest-push
-manifest-push:
+.PHONY: image-manifest-push
+image-manifest-push:
 	@echo '	DOCKER manifest push	$(img)';
 	@docker manifest push '$(img)';
