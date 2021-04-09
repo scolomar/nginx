@@ -1,6 +1,6 @@
 reg	docker.io
 user	library
 repo	nginx
-lbl	1.19.8-alpine
-digest	x86_64	sha256:96419b83f29b198ae9f63670d5a28325a8bc9ebaf76c1260cf15eca3a521ebd0
-digest	aarch64	sha256:a16058839b8fde862c81cbfdc929e16e1ddc81bddb58b9540a3655955067aaa6
+lbl	1.19.9-alpine
+digest	x86_64	sha256:4fe11ac2b8ee14157911dd2029b6e30b7aed3888f4549e733aa51930a4af52af
+digest	aarch64	sha256:58c7a7428e8f246c72fd59f3870b1c5493849c019eacd5d596429be203306f41
