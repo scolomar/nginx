@@ -44,7 +44,7 @@ EXPOSE	8080
 STOPSIGNAL SIGQUIT
 ########################################################################
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD	["nginx" "-g" "daemon off;"]
+CMD	["nginx", "-g", "daemon off;"]
 ########################################################################
 VOLUME	/var/cache/nginx
 VOLUME	/var/run
