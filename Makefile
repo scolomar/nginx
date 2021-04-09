@@ -4,6 +4,9 @@
 # SPDX-License-Identifier:	GPL-2.0-only OR LGPL-2.0-only
 ########################################################################
 
+# Do not print "Entering directory ..."
+MAKEFLAGS += --no-print-directory
+
 arch	= $(shell uname -m)
 
 nginx		= $(CURDIR)/etc/docker/images/nginx
@@ -19,9 +22,11 @@ user	= $(shell <$(nginx_alx) grep '^user' | cut -f2)
 repo	= $(shell <$(nginx_alx) grep '^repo' | cut -f2)
 repository = $(reg)/$(user)/$(repo)
 lbl	= $(shell git describe --tags | sed 's/^v//')
-lbl_	= $(lbl)_$(arch)
+lbl_a	= $(lbl)_$(arch)
 img	= $(repository):$(lbl)
-img_	= $(repository):$(lbl_)
+img_a	= $(repository):$(lbl_a)
+archs	= $(shell <$(CURDIR)/.config grep '^archs' | cut -f2 | tr ',' ' ')
+imgs	= $(addprefix $(img)_,$(archs))
 
 .PHONY: all
 all: image
@@ -38,21 +43,31 @@ Dockerfile: $(CURDIR)/etc/docker/images/nginx
 		$(CURDIR)/$@;
 
 .PHONY: image
-image: Dockerfile $(nginx_alx)
-	@echo '	DOCKER image build	$(img_)';
-	@docker image build -t '$(img_)' $(CURDIR);
+image:
+	@$(MAKE) image-build;
+	@$(MAKE) image-push;
+
+.PHONY: image-build
+image-build: Dockerfile $(nginx_alx)
+	@echo '	DOCKER image build	$(img_a)';
+	@docker image build -t '$(img_a)' $(CURDIR) >/dev/null;
 
 .PHONY: image-push
 image-push:
-	@echo '	DOCKER image push	$(img_)';
-	@docker image push '$(img_)'; 
+	@echo '	DOCKER image push	$(img_a)';
+	@docker image push '$(img_a)' >/dev/null;
 
 .PHONY: image-manifest
 image-manifest:
+	@$(MAKE) image-manifest-create;
+	@$(MAKE) image-manifest-push;
+
+.PHONY: image-manifest-create
+image-manifest-create:
 	@echo '	DOCKER manifest create	$(img)';
-	@docker manifest create '$(img)' '$(img)_x86_64' '$(img)_aarch64';
+	@docker manifest create '$(img)' $(imgs) >/dev/null;
 
 .PHONY: image-manifest-push
 image-manifest-push:
 	@echo '	DOCKER manifest push	$(img)';
-	@docker manifest push '$(img)';
+	@docker manifest push '$(img)' >/dev/null;
