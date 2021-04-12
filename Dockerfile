@@ -26,7 +26,8 @@ RUN									\
 	|xargs apk del;
 
 ########################################################################
-RUN	rm -frv	/etc/nginx/conf.d/default.conf;
+RUN	rm -frv	/etc/nginx/conf.d/*;
+RUN	rm -fv /etc/nginx/nginx.conf;
 ########################################################################
 
 
