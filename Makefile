@@ -28,6 +28,14 @@ img_a	= $(repository):$(lbl_a)
 archs	= $(shell <$(CURDIR)/.config grep '^archs' | cut -f2 | tr ',' ' ')
 imgs	= $(addprefix $(img)_,$(archs))
 
+config		= $(CURDIR)/.config
+orchestrator	= $(shell cat $(CURDIR)/etc/docker/orchestrator)
+project		= $(shell <$(config) grep '^project' | cut -f2)
+stability	= $(shell <$(config) grep '^stable' | cut -f2)
+stack		= $(project)-$(stability)
+node_role	= worker
+host_port	= $(shell <$(config) grep '^port' | grep '$(stability)' | cut -f3)
+
 .PHONY: all
 all: image
 
@@ -71,3 +79,16 @@ image-manifest-create:
 image-manifest-push:
 	@echo '	DOCKER manifest push	$(img)';
 	@docker manifest push '$(img)' >/dev/null;
+
+.PHONY: stack-deploy
+stack-deploy:
+	@echo '	STACK deploy';
+	@export node_role='$(node_role)'; \
+	export label='$(lbl_a)'; \
+	export host_port='$(host_port)'; \
+	alx_stack_deploy -o '$(orchestrator)' '$(stack)';
+
+.PHONY: stack-rm
+stack-rm:
+	@echo '	STACK rm';
+	@alx_stack_delete -o '$(orchestrator)' '$(stack)';

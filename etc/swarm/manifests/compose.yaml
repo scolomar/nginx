@@ -38,7 +38,7 @@ services:
                         placement:
                                 constraints:
                                 -
-                                        node.role == worker
+                                        node.role == ${node_role}
                         replicas: 1
                         resources:
                                 limits:
@@ -55,9 +55,9 @@ services:
                         start_period: 30s
                         test: curl -4s -o /dev/null -w '%{http_code}' http://localhost:8080
                         timeout: 1s
-                image: "docker.io/alejandrocolomar/nginx:latest"
+                image: "docker.io/alejandrocolomar/nginx:${label}"
                 ports:
                 -
-                        "30080:8080"
+                        "${host_port}:8080"
 
 version: "3.8"
