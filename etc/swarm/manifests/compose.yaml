@@ -55,7 +55,7 @@ services:
                         start_period: 30s
                         test: curl -4s -o /dev/null -w '%{http_code}' http://localhost:8080
                         timeout: 1s
-                image: "docker.io/alejandrocolomar/nginx:${label}"
+                image: "${image}:${label}${digest}"
                 ports:
                 -
                         "${host_port}:8080"

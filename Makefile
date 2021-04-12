@@ -8,6 +8,7 @@
 MAKEFLAGS += --no-print-directory
 
 arch	= $(shell uname -m)
+config	= $(CURDIR)/.config
 
 nginx		= $(CURDIR)/etc/docker/images/nginx
 nginx_reg	= $(shell <$(nginx) grep '^reg' | cut -f2)
@@ -25,10 +26,11 @@ lbl	= $(shell git describe --tags | sed 's/^v//')
 lbl_a	= $(lbl)_$(arch)
 img	= $(repository):$(lbl)
 img_a	= $(repository):$(lbl_a)
-archs	= $(shell <$(CURDIR)/.config grep '^archs' | cut -f2 | tr ',' ' ')
+digest	= $(shell <$(nginx_alx) grep '^digest' | grep '$(arch)' | cut -f3)
+digest_	= $(addprefix @,$(digest))
+archs	= $(shell <$(config) grep '^archs' | cut -f2 | tr ',' ' ')
 imgs	= $(addprefix $(img)_,$(archs))
 
-config		= $(CURDIR)/.config
 orchestrator	= $(shell <$(config) grep '^orchest' | cut -f2)
 project		= $(shell <$(config) grep '^project' | cut -f2)
 stability	= $(shell <$(config) grep '^stable' | cut -f2)
@@ -84,7 +86,9 @@ image-manifest-push:
 stack-deploy:
 	@echo '	STACK deploy';
 	@export node_role='$(node_role)'; \
+	export image='$(repository)'; \
 	export label='$(lbl_a)'; \
+	export digest='$(digest_)'; \
 	export host_port='$(host_port)'; \
 	alx_stack_deploy -o '$(orchestrator)' '$(stack)';
 
