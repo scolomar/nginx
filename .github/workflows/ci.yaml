@@ -40,9 +40,11 @@ jobs:
                 -
                         name: curl
                         run: |
+                                stability="$(<.config grep '^stable' | cut -f2)";
+                                port="$(<.config grep '^port' | grep "${stability}" | cut -f3)";
                                 while true; do
                                         sleep 1;
-                                        curl -4s -o /dev/null -w '%{http_code}' localhost:31080 \
+                                        curl -4s -o /dev/null -w '%{http_code}' localhost:${port} \
                                         |grep 200 \
                                         && break;
                                 done;
