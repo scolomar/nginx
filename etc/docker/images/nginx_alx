@@ -1,3 +1,5 @@
 reg	docker.io
 user	alejandrocolomar
 repo	nginx
+digest	aarch64
+digest	x86_64
