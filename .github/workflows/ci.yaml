@@ -1,0 +1,48 @@
+name: ci
+
+on:
+        push:
+        pull_request:
+jobs:
+        main:
+                runs-on: ubuntu-20.04
+                steps:
+                -
+                        name: git clone alejandro-colomar/containers
+                        run: |
+                                sudo git -C /usr/local/src \
+                                        clone --single-branch --branch 'v0.4.1' \
+                                        http://github.com/alejandro-colomar/containers.git;
+                -
+                        name: make swarm
+                        run: sudo make -C /usr/local/src/containers swarm;
+                -
+                        name: checkout
+                        uses: actions/checkout@v2
+                -
+                        name: make image-build
+                        run: make image-build lbl_a=ci;
+                -
+                        name: docker swarm init
+                        run: docker swarm init --advertise-addr lo;
+                -
+                        name: make stack-deploy
+                        run: sudo make stack-deploy lbl_a=ci node_role=manager;
+                -
+                        name: docker service ls
+                        run: |
+                                while true; do
+                                        sleep 1;
+                                        docker service ls \
+                                        |grep '\([0-9]\)/\1' \
+                                        && break;
+                                done;
+                -
+                        name: curl
+                        run: |
+                                while true; do
+                                        sleep 1;
+                                        curl -4s -o /dev/null -w '%{http_code}' localhost:31080 \
+                                        |grep 200 \
+                                        && break;
+                                done;
