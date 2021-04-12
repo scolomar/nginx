@@ -10,26 +10,29 @@ MAKEFLAGS += --no-print-directory
 arch	= $(shell uname -m)
 config	= $(CURDIR)/.config
 
-nginx		= $(CURDIR)/etc/docker/images/nginx
+nginx		= $(CURDIR)/etc/docker/image.d/nginx
 nginx_reg	= $(shell <$(nginx) grep '^reg' | cut -f2)
 nginx_user	= $(shell <$(nginx) grep '^user' | cut -f2)
 nginx_repo	= $(shell <$(nginx) grep '^repo' | cut -f2)
 nginx_lbl	= $(shell <$(nginx) grep '^lbl' | cut -f2)
 nginx_digest	= $(shell <$(nginx) grep '^digest' | grep '$(arch)' | cut -f3)
 
-nginx_alx = $(CURDIR)/etc/docker/images/nginx_alx
-reg	= $(shell <$(nginx_alx) grep '^reg' | cut -f2)
-user	= $(shell <$(nginx_alx) grep '^user' | cut -f2)
-repo	= $(shell <$(nginx_alx) grep '^repo' | cut -f2)
+image	= $(CURDIR)/etc/docker/image
+reg	= $(shell <$(image) grep '^reg' | cut -f2)
+user	= $(shell <$(image) grep '^user' | cut -f2)
+repo	= $(shell <$(image) grep '^repo' | cut -f2)
 repository = $(reg)/$(user)/$(repo)
 lbl	= $(shell git describe --tags | sed 's/^v//')
 lbl_a	= $(lbl)_$(arch)
 img	= $(repository):$(lbl)
 img_a	= $(repository):$(lbl_a)
-digest	= $(shell <$(nginx_alx) grep '^digest' | grep '$(arch)' | cut -f3)
-digest_	= $(addprefix @,$(digest))
 archs	= $(shell <$(config) grep '^archs' | cut -f2 | tr ',' ' ')
 imgs	= $(addprefix $(img)_,$(archs))
+
+image_	= $(CURDIR)/run/docker/image
+lbl_	= $(shell <$(image_) grep '^lbl' |cut -f2)
+digest	= $(shell <$(image_) grep '^digest' | grep '$(arch)' | cut -f3)
+digest_	= $(addprefix @,$(digest))
 
 orchestrator	= $(shell <$(config) grep '^orchest' | cut -f2)
 project		= $(shell <$(config) grep '^project' | cut -f2)
@@ -42,7 +45,7 @@ host_port	= $(shell <$(config) grep '^port' | grep '$(stability)' | cut -f3)
 all: image
 
 .PHONY: Dockerfile
-Dockerfile: $(CURDIR)/etc/docker/images/nginx
+Dockerfile: $(nginx)
 	@echo '	Update Dockerfile ARGs';
 	@sed -i \
 		-e '/^ARG	NGINX_REG=/s/=.*/="$(nginx_reg)"/' \
@@ -58,9 +61,10 @@ image:
 	@$(MAKE) image-push;
 
 .PHONY: image-build
-image-build: Dockerfile $(nginx_alx)
+image-build: Dockerfile $(image)
 	@echo '	DOCKER image build	$(img_a)';
 	@docker image build -t '$(img_a)' $(CURDIR) >/dev/null;
+	@sed -Ei 's/^lbl.*/lbl	$(lbl_a)/' $(image_);
 
 .PHONY: image-push
 image-push:
@@ -69,7 +73,7 @@ image-push:
 	|grep 'digest:' \
 	|sed -E 's/.*digest: ([^ ]+) .*/\1/' \
 	|while read d; do \
-		sed -Ei "s/^(digest	$(arch)).*/\1	$${d}/" $(nginx_alx); \
+		sed -Ei "s/^(digest	$(arch)).*/\1	$${d}/" $(image_); \
 	done;
 
 .PHONY: image-manifest
@@ -81,6 +85,7 @@ image-manifest:
 image-manifest-create:
 	@echo '	DOCKER manifest create	$(img)';
 	@docker manifest create '$(img)' $(imgs) >/dev/null;
+	@sed -Ei 's/^lbl.*/lbl	$(lbl)/' $(image_);
 
 .PHONY: image-manifest-push
 image-manifest-push:
@@ -92,7 +97,7 @@ stack-deploy:
 	@echo '	STACK deploy';
 	@export node_role='$(node_role)'; \
 	export image='$(repository)'; \
-	export label='$(lbl_a)'; \
+	export label='$(lbl_)'; \
 	export digest='$(digest_)'; \
 	export host_port='$(host_port)'; \
 	alx_stack_deploy -o '$(orchestrator)' '$(stack)';

@@ -21,13 +21,13 @@ jobs:
                         uses: actions/checkout@v2
                 -
                         name: make image-build
-                        run: make image-build lbl_a=ci;
+                        run: make image-build lbl=ci;
                 -
                         name: docker swarm init
                         run: docker swarm init --advertise-addr lo;
                 -
                         name: make stack-deploy
-                        run: sudo make stack-deploy lbl_a=ci node_role=manager;
+                        run: sudo make stack-deploy node_role=manager;
                 -
                         name: docker service ls
                         run: |
