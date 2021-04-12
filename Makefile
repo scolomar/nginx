@@ -65,7 +65,12 @@ image-build: Dockerfile $(nginx_alx)
 .PHONY: image-push
 image-push:
 	@echo '	DOCKER image push	$(img_a)';
-	@docker image push '$(img_a)' >/dev/null;
+	@docker image push '$(img_a)' \
+	|grep 'digest:' \
+	|sed -E 's/.*digest: ([^ ]+) .*/\1/' \
+	|while read d; do \
+		sed -Ei "s/^(digest	$(arch)).*/\1	$${d}/" $(nginx_alx); \
+	done;
 
 .PHONY: image-manifest
 image-manifest:
