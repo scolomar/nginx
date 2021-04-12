@@ -29,11 +29,11 @@ archs	= $(shell <$(CURDIR)/.config grep '^archs' | cut -f2 | tr ',' ' ')
 imgs	= $(addprefix $(img)_,$(archs))
 
 config		= $(CURDIR)/.config
-orchestrator	= $(shell cat $(CURDIR)/etc/docker/orchestrator)
+orchestrator	= $(shell <$(config) grep '^orchest' | cut -f2)
 project		= $(shell <$(config) grep '^project' | cut -f2)
 stability	= $(shell <$(config) grep '^stable' | cut -f2)
 stack		= $(project)-$(stability)
-node_role	= worker
+node_role	= $(shell <$(config) grep '^node' | cut -f2)
 host_port	= $(shell <$(config) grep '^port' | grep '$(stability)' | cut -f3)
 
 .PHONY: all
