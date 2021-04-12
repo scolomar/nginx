@@ -13,6 +13,9 @@ ARG	NGINX_REPOSITORY="${NGINX_REG}/${NGINX_USER}/${NGINX_REPO}"
 ARG	NGINX_LBL="1.19.9-alpine"
 ARG	NGINX_DIGEST="sha256:4fe11ac2b8ee14157911dd2029b6e30b7aed3888f4549e733aa51930a4af52af"
 ########################################################################
+
+
+########################################################################
 FROM	"${NGINX_REPOSITORY}:${NGINX_LBL}@${NGINX_DIGEST}" AS nginx
 ########################################################################
 RUN									\
